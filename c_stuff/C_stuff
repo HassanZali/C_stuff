@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+extern char** environ;
+
+void print_environment() {
+    char** env = environ;
+    while (*env) {
+        printf("%s\n", *env);
+        env++;
+    }
+}
+
+int main() {
+    char command[100];
+
+    while (1) {
+        printf("$ ");
+        fgets(command, sizeof(command), stdin);
+        command[strcspn(command, "\n")] = '\0'; // Remove trailing newline
+
+        if (strcmp(command, "env") == 0) {
+            print_environment();
+        }
+        else if (strcmp(command, "exit") == 0) {
+            break;
+        }
+        else {
+            printf("Command not found.\n");
+        }
+    }
+
+    return 0;
+}
+
